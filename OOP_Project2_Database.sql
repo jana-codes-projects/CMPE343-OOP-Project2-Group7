@@ -30,9 +30,9 @@ CREATE TABLE contacts (
 
 INSERT INTO users (username, password_hash, first_name, last_name, user_role)
 VALUES	('tt', SHA2('tt', 256), 'Kaan', 'Yılmaz', 'TESTER'),
-		    ('jd', SHA2('jd', 256), 'Nur', 'Kumbasar', 'JUNIOR_DEVELOPER'),
-		    ('sd', SHA2('sd', 256), 'Emir', 'Gökdemir', 'SENIOR_DEVELOPER'),
-		    ('man', SHA2('man', 256), 'Jana', 'Albarazi', 'MANAGER');
+		('jd', SHA2('jd', 256), 'Nur', 'Kumbasar', 'JUNIOR_DEVELOPER'),
+	    ('sd', SHA2('sd', 256), 'Emir', 'Gökdemir', 'SENIOR_DEVELOPER'),
+		('man', SHA2('man', 256), 'Jana', 'Albarazi', 'MANAGER');
 
 INSERT INTO contacts (first_name, middle_name, last_name, nickname, phone_primary, phone_secondary, email, linkedin_url, birth_date, created_at, updated_at) 
 VALUES	('Sophia', 'Marie', 'Johnson', 'sophie', '+1-555-264-9785', NULL, 'sophia.johnson@yahoo.com', 'https://linkedin.com/in/sophiajohnson', '1992-03-15', NOW(), NOW()),
