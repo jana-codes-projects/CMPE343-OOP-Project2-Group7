@@ -1,31 +1,12 @@
 package dao;
 
 import models.User;
-
 import java.util.List;
 
-public class UserDao
-{
-    User findByUsername(String username)
-    {
-        User user;
-        return user;
-    }
-    List<User> findAllUsers()
-    {
-        List<User> users;
-        return users;
-    }
-    void updateUser(User user)
-    {
-
-    }
-    void addUser(User user)
-    {
-
-    }
-    void deleteUser(int userId)
-    {
-
-    }
+public interface UserDao {
+    User findByUsername(String username);
+    List<User> findAllUsers();
+    void updateUser(User user);
+    void addUser(User user);
+    void deleteUser(int userId);
 }
