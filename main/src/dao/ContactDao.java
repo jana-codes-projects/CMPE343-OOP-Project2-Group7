@@ -5,7 +5,8 @@ import models.Contact;
 import java.util.List;
 import java.util.Map;
 
-public interface ContactDao {
+public interface ContactDao
+{
     List<Contact> getAllContacts();
     List<Contact> searchBySingleField(String field, String value);
     List<Contact> searchByMultipleFields(Map<String, String> fields);

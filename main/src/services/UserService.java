@@ -5,9 +5,7 @@ import dao.UserDaoImplementation;
 import models.User;
 import exceptions.DatabaseException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserService
 {
@@ -63,29 +61,5 @@ public class UserService
         {
             throw new DatabaseException("Failed to delete user", e);
         }
-    }
-
-    // Generate statistics about users (example: count per role)
-    public Map<String, Object> generateStatistics() throws DatabaseException
-    {
-        Map<String, Object> stats = new HashMap<>();
-        try
-        {
-            List<User> users = userDao.findAllUsers();
-            Map<String, Integer> roleCounts = new HashMap<>();
-
-            for (User user : users)
-            {
-                roleCounts.put(user.getUserRole(), roleCounts.getOrDefault(user.getUserRole(), 0) + 1);
-            }
-
-            stats.put("totalUsers", users.size());
-            stats.put("roleCounts", roleCounts);
-        }
-        catch (Exception e)
-        {
-            throw new DatabaseException("Failed to generate user statistics", e);
-        }
-        return stats;
     }
 }
