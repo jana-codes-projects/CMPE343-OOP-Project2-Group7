@@ -1,28 +1,81 @@
 package menus;
 
+import app.Application;
+import auth.AuthService;
+import models.User;
+import utils.ConsoleColor;
+
+import java.util.Scanner;
+
+/**
+ * Simple login menu abstraction.
+ * <p>
+ * The main application currently performs login itself, but this class
+ * documents and encapsulates the same behavior for clarity and potential reuse.
+ */
 public class LoginMenu
 {
+    private static final AuthService authService = new AuthService();
+    private static final Scanner scanner = new Scanner(System.in);
+
     /**
-     * Display login screen
+     * Displays the login screen and attempts to authenticate the user.
+     * The method keeps prompting until a successful login or an explicit exit.
+     *
+     * @return the authenticated {@link User}, or {@code null} if the user chose to exit
      */
-    public void showLoginScreen()
+    public static User showLoginScreen()
     {
-        // Prompt for username/password and authenticate
+        while (true)
+        {
+            System.out.println("\n" + ConsoleColor.BRIGHT_YELLOW + "===== LOGIN =====" + ConsoleColor.RESET);
+            System.out.print("Username (or type exit): ");
+            String username = scanner.nextLine();
+            if ("exit".equalsIgnoreCase(username))
+            {
+                return null;
+            }
+
+            System.out.print("Password: ");
+            String password = scanner.nextLine();
+
+            try
+            {
+                User user = authService.login(username, password);
+                System.out.println(ConsoleColor.BRIGHT_GREEN + "Login successful! Hello " +
+                        user.getFirstName() + ConsoleColor.RESET);
+                return user;
+            }
+            catch (Exception e)
+            {
+                System.out.println(ConsoleColor.MAGENTA + "Login failed: " + e.getMessage() + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.BLUE + "Try again or type 'exit' to quit." + ConsoleColor.RESET);
+            }
+        }
     }
 
     /**
-     * Attempt login with credentials
+     * Attempts a single login using the provided credentials.
+     *
+     * @param username username to authenticate
+     * @param password plain‑text password
+     * @return authenticated {@link User}
+     * @throws Exception if authentication fails
      */
-    public void login(String username, String password)
+    public User login(String username, String password) throws Exception
     {
-        // Use AuthService.login
+        return authService.login(username, password);
     }
 
     /**
-     * Exit application
+     * Terminates the JVM process.
+     * <p>
+     * In this project, clean shutdown is handled by {@link Application},
+     * so this method is kept for completeness but is not used.
      */
     public void exitApplication()
     {
-        // Terminate the app
+        System.out.println(ConsoleColor.CYAN + "Exiting application..." + ConsoleColor.RESET);
+        System.exit(0);
     }
 }

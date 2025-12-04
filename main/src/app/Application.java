@@ -1,6 +1,7 @@
 package app;
 
 import exceptions.DatabaseException;
+import menus.LoginMenu;
 import models.User;
 import models.Role;
 import auth.AuthService;
@@ -10,6 +11,7 @@ import controllers.SeniorDeveloperMenuController;
 import controllers.ManagerMenuController;
 import utils.ConsoleColor;
 import utils.AsciiAnimations;
+import menus.LoginMenu;
 
 import java.util.Scanner;
 
@@ -33,7 +35,7 @@ public class Application
 
         while (running)
         {
-            User user = showLoginScreen();
+            User user = LoginMenu.showLoginScreen();
             if (user != null) {
                 routeToRoleMenu(user);
             }

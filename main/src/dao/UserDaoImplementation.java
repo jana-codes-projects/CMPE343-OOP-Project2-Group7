@@ -7,30 +7,41 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImplementation implements UserDao {
-
+/**
+ * JDBC-based implementation of {@link UserDao} using {@link DatabaseConnection}.
+ * Responsible only for persistence logic; higher layers handle validation and hashing.
+ */
+public class UserDaoImplementation implements UserDao
+{
     private final DatabaseConnection db = new DatabaseConnection();
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsername(String username)
+    {
         User userObj = null;
         String query = "SELECT * FROM users WHERE username = ?";
 
         Connection conn = null;
-        try {
+        try
+        {
             conn = db.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+            if (rs.next())
+            {
                 userObj = new User(rs);
             }
             rs.close();
             ps.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
+        }
+        finally
+        {
             db.close(conn);
         }
 
@@ -43,19 +54,25 @@ public class UserDaoImplementation implements UserDao {
         String query = "SELECT * FROM users";
 
         Connection conn = null;
-        try {
+        try
+        {
             conn = db.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 users.add(new User(rs));
             }
             rs.close();
             stmt.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
+        }
+        finally
+        {
             db.close(conn);
         }
 
@@ -63,7 +80,8 @@ public class UserDaoImplementation implements UserDao {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user)
+    {
         String query = "UPDATE users SET username=?, password_hash=?, first_name=?, last_name=?, user_role=? WHERE user_id=?";
         Connection conn = null;
 
@@ -79,19 +97,25 @@ public class UserDaoImplementation implements UserDao {
 
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
+        }
+        finally
+        {
             db.close(conn);
         }
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(User user)
+    {
         String query = "INSERT INTO users (username, password_hash, first_name, last_name, user_role, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         Connection conn = null;
 
-        try {
+        try
+        {
             conn = db.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, user.getUsername());
@@ -103,27 +127,37 @@ public class UserDaoImplementation implements UserDao {
 
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
+        }
+        finally
+        {
             db.close(conn);
         }
     }
 
     @Override
-    public void deleteUser(int userId) {
+    public void deleteUser(int userId)
+    {
         String query = "DELETE FROM users WHERE user_id=?";
         Connection conn = null;
 
-        try {
+        try
+        {
             conn = db.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, userId);
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
-        } finally {
+        }
+        finally
+        {
             db.close(conn);
         }
     }

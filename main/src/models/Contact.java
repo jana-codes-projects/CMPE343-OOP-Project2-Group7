@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Domain model representing a contact record from the {@code contacts} table.
+ */
 public class Contact
 {
     private int contactId;
@@ -20,13 +23,20 @@ public class Contact
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Default constructor
+    /**
+     * Default no-arg constructor.
+     */
     public Contact()
     {
 
     }
 
-    // Constructor from ResultSet
+    /**
+     * Constructs a {@link Contact} from a JDBC {@link ResultSet}.
+     *
+     * @param rs result set positioned at a contact row
+     * @throws SQLException if any column cannot be read
+     */
     public Contact(ResultSet rs) throws SQLException
     {
         this.contactId = rs.getInt("contact_id");
@@ -38,7 +48,10 @@ public class Contact
         this.phoneSecondary = rs.getString("phone_secondary");
         this.email = rs.getString("email");
         this.linkedinUrl = rs.getString("linkedin_url");
-        this.birthDate = rs.getDate("birth_date").toLocalDate();
+
+        java.sql.Date birth = rs.getDate("birth_date");
+        this.birthDate = (birth != null) ? birth.toLocalDate() : null;
+
         this.createdAt = rs.getTimestamp("created_at").toLocalDateTime();
         this.updatedAt = rs.getTimestamp("updated_at").toLocalDateTime();
     }

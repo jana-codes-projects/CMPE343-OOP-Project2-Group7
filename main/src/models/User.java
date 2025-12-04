@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Domain model representing a user record from the {@code users} table.
+ */
 public class User
 {
     private int userId;
@@ -14,13 +17,20 @@ public class User
     private String userRole;
     private LocalDateTime createdAt;
 
-    // Default constructor
+    /**
+     * Default no-arg constructor.
+     */
     public User()
     {
 
     }
 
-    // Constructor from ResultSet
+    /**
+     * Constructs a {@link User} from a JDBC {@link ResultSet}.
+     *
+     * @param rs result set positioned at a user row
+     * @throws SQLException if a column cannot be read
+     */
     public User(ResultSet rs) throws SQLException
     {
         this.userId = rs.getInt("user_id");
@@ -109,8 +119,8 @@ public class User
 
     public void setUserRole(String userRole)
     {
-        // Example: allow only "admin" or "user"
-        if ("admin".equalsIgnoreCase(userRole) || "user".equalsIgnoreCase(userRole))
+        // Accept any non-empty role string; higher layers map it to an enum if needed
+        if (userRole != null && !userRole.isEmpty())
         {
             this.userRole = userRole;
         }
@@ -122,17 +132,6 @@ public class User
     }
 
     // Other methods
-    public boolean isAdmin()
-    {
-        return "admin".equalsIgnoreCase(this.userRole);
-    }
-
-    public boolean validatePassword(String plainPassword)
-    {
-        // Placeholder: compare hash with plain password
-        return this.passwordHash.equals(plainPassword); // Replace with proper hash check
-    }
-
     @Override
     public String toString()
     {
