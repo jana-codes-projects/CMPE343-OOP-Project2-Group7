@@ -349,11 +349,17 @@ public class SeniorDeveloperMenuController extends BaseMenuController
         System.out.print("Birth date (yyyy-MM-dd) (optional): ");
         String birthDateStr = scanner.nextLine();
         if (!birthDateStr.isBlank()) {
-            if (!validator.isValidDate(birthDateStr)) {
-                System.out.println(ConsoleColor.MAGENTA + "Invalid date. Please use yyyy-MM-dd (e.g. 2005-09-12)." + ConsoleColor.RESET);
+            if (!validator.isValidBirthdate(birthDateStr)) {
+                String errorMsg = validator.getBirthdateErrorMessage(birthDateStr);
+                System.out.println(ConsoleColor.MAGENTA + errorMsg + ConsoleColor.RESET);
                 return;
             }
-            contact.setBirthDate(LocalDate.parse(birthDateStr));
+            try {
+                contact.setBirthDate(LocalDate.parse(birthDateStr));
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
         // Uniqueness checks for phone and email

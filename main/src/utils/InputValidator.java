@@ -108,4 +108,74 @@ public class InputValidator
             return false;
         return LETTERS_PATTERN.matcher(name).matches();
     }
+
+    /**
+     * Validate birthdate - must be in the past and within reasonable range.
+     * - Cannot be in the future or today
+     * - Must be within 150 years from today
+     *
+     * @param date string in yyyy-MM-dd format
+     * @return true if valid birthdate
+     */
+    public boolean isValidBirthdate(String date) {
+        if (date == null) return false;
+        try {
+            LocalDate birthDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate today = LocalDate.now();
+
+            // Cannot be in the future
+            if (birthDate.isAfter(today)) {
+                return false;
+            }
+
+            // Cannot be today
+            if (birthDate.isEqual(today)) {
+                return false;
+            }
+
+            // Must be within reasonable range (max 150 years old)
+            LocalDate minDate = today.minusYears(150);
+            if (birthDate.isBefore(minDate)) {
+                return false;
+            }
+
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get detailed error message for invalid birthdate.
+     *
+     * @param date string in yyyy-MM-dd format
+     * @return error message, or null if valid
+     */
+    public String getBirthdateErrorMessage(String date) {
+        if (date == null || date.trim().isEmpty()) {
+            return "Birthdate cannot be empty";
+        }
+
+        try {
+            LocalDate birthDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate today = LocalDate.now();
+
+            if (birthDate.isAfter(today)) {
+                return "Birthdate cannot be in the future";
+            }
+
+            if (birthDate.isEqual(today)) {
+                return "Birthdate cannot be today";
+            }
+
+            LocalDate minDate = today.minusYears(150);
+            if (birthDate.isBefore(minDate)) {
+                return "Birthdate is too far in the past (max 150 years)";
+            }
+
+            return null; // Valid
+        } catch (DateTimeParseException e) {
+            return "Invalid date format. Please use yyyy-MM-dd format (e.g., 1995-03-15). Note: Invalid dates like February 30 are not allowed.";
+        }
+    }
 }

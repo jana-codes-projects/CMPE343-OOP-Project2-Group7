@@ -154,6 +154,19 @@ public class Contact
 
     public void setBirthDate(LocalDate birthDate)
     {
+        if (birthDate != null) {
+            LocalDate today = LocalDate.now();
+            if (birthDate.isAfter(today)) {
+                throw new IllegalArgumentException("Birthdate cannot be in the future");
+            }
+            if (birthDate.isEqual(today)) {
+                throw new IllegalArgumentException("Birthdate cannot be today");
+            }
+            LocalDate minDate = today.minusYears(150);
+            if (birthDate.isBefore(minDate)) {
+                throw new IllegalArgumentException("Birthdate is too far in the past (max 150 years)");
+            }
+        }
         this.birthDate = birthDate;
     }
 
