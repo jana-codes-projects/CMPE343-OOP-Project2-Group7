@@ -110,6 +110,39 @@ public class InputValidator
     }
 
     /**
+     * Validate name field length (max 50 characters).
+     *
+     * @param name the name to validate
+     * @return true if valid (not null, not empty, <= 50 chars)
+     */
+    public boolean isValidNameLength(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return name.length() <= 50;
+    }
+
+    /**
+     * Get detailed error message for invalid name.
+     *
+     * @param name the name to validate
+     * @param fieldName the field name (e.g., "First name", "Last name")
+     * @return error message, or null if valid
+     */
+    public String getNameErrorMessage(String name, String fieldName) {
+        if (name == null || name.trim().isEmpty()) {
+            return fieldName + " cannot be empty";
+        }
+        if (name.length() > 50) {
+            return fieldName + " must be at most 50 characters (current: " + name.length() + ")";
+        }
+        if (!containsOnlyLetters(name)) {
+            return fieldName + " must contain only letters";
+        }
+        return null; // Valid
+    }
+
+    /**
      * Validate birthdate - must be in the past and within reasonable range.
      * - Cannot be in the future or today
      * - Must be within 150 years from today

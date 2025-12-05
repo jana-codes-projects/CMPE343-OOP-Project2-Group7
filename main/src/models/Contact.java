@@ -114,21 +114,39 @@ public class Contact
 
     public void setFirstName(String firstName)
     {
-        if (firstName != null && !firstName.isEmpty()) this.firstName = firstName;
+        if (firstName == null || firstName.isEmpty()) {
+            throw new IllegalArgumentException("First name cannot be empty");
+        }
+        if (firstName.length() > 50) {
+            throw new IllegalArgumentException("First name must be at most 50 characters");
+        }
+        this.firstName = firstName;
     }
 
     public void setMiddleName(String middleName)
     {
+        if (middleName != null && !middleName.isEmpty() && middleName.length() > 50) {
+            throw new IllegalArgumentException("Middle name must be at most 50 characters");
+        }
         this.middleName = middleName;
     }
 
     public void setLastName(String lastName)
     {
-        if (lastName != null && !lastName.isEmpty()) this.lastName = lastName;
+        if (lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be empty");
+        }
+        if (lastName.length() > 50) {
+            throw new IllegalArgumentException("Last name must be at most 50 characters");
+        }
+        this.lastName = lastName;
     }
 
     public void setNickname(String nickname)
     {
+        if (nickname != null && !nickname.isEmpty() && nickname.length() > 40) {
+            throw new IllegalArgumentException("Nickname must be at most 40 characters");
+        }
         this.nickname = nickname;
     }
 

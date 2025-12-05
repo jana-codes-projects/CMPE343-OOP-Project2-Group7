@@ -103,18 +103,28 @@ public class User
 
     public void setFirstName(String firstName)
     {
-        if (firstName != null && !firstName.isEmpty())
+        if (firstName == null || firstName.isEmpty())
         {
-            this.firstName = firstName;
+            throw new IllegalArgumentException("First name cannot be empty");
         }
+        if (firstName.length() > 50)
+        {
+            throw new IllegalArgumentException("First name must be at most 50 characters");
+        }
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName)
     {
-        if (lastName != null && !lastName.isEmpty())
+        if (lastName == null || lastName.isEmpty())
         {
-            this.lastName = lastName;
+            throw new IllegalArgumentException("Last name cannot be empty");
         }
+        if (lastName.length() > 50)
+        {
+            throw new IllegalArgumentException("Last name must be at most 50 characters");
+        }
+        this.lastName = lastName;
     }
 
     public void setUserRole(String userRole)

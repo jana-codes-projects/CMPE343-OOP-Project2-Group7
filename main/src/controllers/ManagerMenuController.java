@@ -137,16 +137,36 @@ public class ManagerMenuController extends BaseMenuController
             target.setUsername(username);
         }
 
-        System.out.print("First name (" + target.getFirstName() + "): ");
+        System.out.print("First name (" + target.getFirstName() + ") [max 50 chars]: ");
         String firstName = scanner.nextLine();
         if (!firstName.isBlank()) {
-            target.setFirstName(firstName);
+            String firstNameError = validator.getNameErrorMessage(firstName, "First name");
+            if (firstNameError != null) {
+                System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
+                return;
+            }
+            try {
+                target.setFirstName(firstName);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
-        System.out.print("Last name (" + target.getLastName() + "): ");
+        System.out.print("Last name (" + target.getLastName() + ") [max 50 chars]: ");
         String lastName = scanner.nextLine();
         if (!lastName.isBlank()) {
-            target.setLastName(lastName);
+            String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
+            if (lastNameError != null) {
+                System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);
+                return;
+            }
+            try {
+                target.setLastName(lastName);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
         System.out.print("Role (" + target.getUserRole() + "): ");
@@ -176,21 +196,33 @@ public class ManagerMenuController extends BaseMenuController
         }
         user.setUsername(username);
 
-        System.out.print("First name [letters only]: ");
+        System.out.print("First name [letters only, max 50 chars]: ");
         String firstName = scanner.nextLine();
-        if (!validator.containsOnlyLetters(firstName)) {
-            System.out.println(ConsoleColor.MAGENTA + "First name must contain letters only." + ConsoleColor.RESET);
+        String firstNameError = validator.getNameErrorMessage(firstName, "First name");
+        if (firstNameError != null) {
+            System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
             return;
         }
-        user.setFirstName(firstName);
+        try {
+            user.setFirstName(firstName);
+        } catch (IllegalArgumentException e) {
+            System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+            return;
+        }
 
-        System.out.print("Last name [letters only]: ");
+        System.out.print("Last name [letters only, max 50 chars]: ");
         String lastName = scanner.nextLine();
-        if (!validator.containsOnlyLetters(lastName)) {
-            System.out.println(ConsoleColor.MAGENTA + "Last name must contain letters only." + ConsoleColor.RESET);
+        String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
+        if (lastNameError != null) {
+            System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);
             return;
         }
-        user.setLastName(lastName);
+        try {
+            user.setLastName(lastName);
+        } catch (IllegalArgumentException e) {
+            System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+            return;
+        }
 
         System.out.print("Role (Tester, Junior Developer, Senior Developer, Manager): ");
         String role = scanner.nextLine();

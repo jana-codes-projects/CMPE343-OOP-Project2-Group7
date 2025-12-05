@@ -206,34 +206,52 @@ public class JuniorDeveloperMenuController extends BaseMenuController
 
         System.out.println("Leave a field empty to keep the current value.");
 
-        System.out.print("First name (" + contact.getFirstName() + ") [letters only]: ");
+        System.out.print("First name (" + contact.getFirstName() + ") [letters only, max 50 chars]: ");
         String firstName = scanner.nextLine();
         if (!firstName.isBlank()) {
-            if (!validator.containsOnlyLetters(firstName)) {
-                System.out.println(ConsoleColor.MAGENTA + "First name must contain letters only." + ConsoleColor.RESET);
+            String firstNameError = validator.getNameErrorMessage(firstName, "First name");
+            if (firstNameError != null) {
+                System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
                 return;
             }
-            contact.setFirstName(firstName);
+            try {
+                contact.setFirstName(firstName);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
-        System.out.print("Middle name (" + contact.getMiddleName() + ") [letters only or empty]: ");
+        System.out.print("Middle name (" + contact.getMiddleName() + ") [letters only, max 50 chars or empty]: ");
         String middleName = scanner.nextLine();
         if (!middleName.isBlank()) {
-            if (!validator.containsOnlyLetters(middleName)) {
-                System.out.println(ConsoleColor.MAGENTA + "Middle name must contain letters only." + ConsoleColor.RESET);
+            String middleNameError = validator.getNameErrorMessage(middleName, "Middle name");
+            if (middleNameError != null) {
+                System.out.println(ConsoleColor.MAGENTA + middleNameError + ConsoleColor.RESET);
                 return;
             }
-            contact.setMiddleName(middleName);
+            try {
+                contact.setMiddleName(middleName);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
-        System.out.print("Last name (" + contact.getLastName() + ") [letters only]: ");
+        System.out.print("Last name (" + contact.getLastName() + ") [letters only, max 50 chars]: ");
         String lastName = scanner.nextLine();
         if (!lastName.isBlank()) {
-            if (!validator.containsOnlyLetters(lastName)) {
-                System.out.println(ConsoleColor.MAGENTA + "Last name must contain letters only." + ConsoleColor.RESET);
+            String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
+            if (lastNameError != null) {
+                System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);
                 return;
             }
-            contact.setLastName(lastName);
+            try {
+                contact.setLastName(lastName);
+            } catch (IllegalArgumentException e) {
+                System.out.println(ConsoleColor.MAGENTA + e.getMessage() + ConsoleColor.RESET);
+                return;
+            }
         }
 
         System.out.print("Primary phone (" + contact.getPhonePrimary() + ") [e.g. +90XXXXXXXXXX, codes: +1,+7,+20,+44,+55,+81,+86,+90,+91,+234]: ");
