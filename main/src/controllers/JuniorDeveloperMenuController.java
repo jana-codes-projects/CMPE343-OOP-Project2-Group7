@@ -209,6 +209,7 @@ public class JuniorDeveloperMenuController extends BaseMenuController
         System.out.print("First name (" + contact.getFirstName() + ") [letters only, max 50 chars]: ");
         String firstName = scanner.nextLine();
         if (!firstName.isBlank()) {
+            firstName = validator.formatName(firstName);
             String firstNameError = validator.getNameErrorMessage(firstName, "First name");
             if (firstNameError != null) {
                 System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
@@ -225,6 +226,7 @@ public class JuniorDeveloperMenuController extends BaseMenuController
         System.out.print("Middle name (" + contact.getMiddleName() + ") [letters only, max 50 chars or empty]: ");
         String middleName = scanner.nextLine();
         if (!middleName.isBlank()) {
+            middleName = validator.formatName(middleName);
             String middleNameError = validator.getNameErrorMessage(middleName, "Middle name");
             if (middleNameError != null) {
                 System.out.println(ConsoleColor.MAGENTA + middleNameError + ConsoleColor.RESET);
@@ -241,6 +243,7 @@ public class JuniorDeveloperMenuController extends BaseMenuController
         System.out.print("Last name (" + contact.getLastName() + ") [letters only, max 50 chars]: ");
         String lastName = scanner.nextLine();
         if (!lastName.isBlank()) {
+            lastName = validator.formatName(lastName);
             String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
             if (lastNameError != null) {
                 System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);

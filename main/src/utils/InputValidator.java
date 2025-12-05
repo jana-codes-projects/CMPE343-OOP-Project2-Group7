@@ -143,6 +143,39 @@ public class InputValidator
     }
 
     /**
+     * Capitalize first letter and lowercase the rest.
+     * Handles multi-word names separated by spaces or hyphens.
+     *
+     * @param name the name to format
+     * @return formatted name, or null if input is null
+     */
+    public String formatName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return name;
+        }
+
+        name = name.trim();
+        StringBuilder formatted = new StringBuilder();
+        boolean capitalizeNext = true;
+
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+
+            if (Character.isWhitespace(c) || c == '-') {
+                formatted.append(c);
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                formatted.append(Character.toUpperCase(c));
+                capitalizeNext = false;
+            } else {
+                formatted.append(Character.toLowerCase(c));
+            }
+        }
+
+        return formatted.toString();
+    }
+
+    /**
      * Validate birthdate - must be in the past and within reasonable range.
      * - Cannot be in the future or today
      * - Must be within 150 years from today

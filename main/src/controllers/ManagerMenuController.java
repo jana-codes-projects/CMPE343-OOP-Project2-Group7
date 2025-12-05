@@ -140,6 +140,7 @@ public class ManagerMenuController extends BaseMenuController
         System.out.print("First name (" + target.getFirstName() + ") [max 50 chars]: ");
         String firstName = scanner.nextLine();
         if (!firstName.isBlank()) {
+            firstName = validator.formatName(firstName);
             String firstNameError = validator.getNameErrorMessage(firstName, "First name");
             if (firstNameError != null) {
                 System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
@@ -156,6 +157,7 @@ public class ManagerMenuController extends BaseMenuController
         System.out.print("Last name (" + target.getLastName() + ") [max 50 chars]: ");
         String lastName = scanner.nextLine();
         if (!lastName.isBlank()) {
+            lastName = validator.formatName(lastName);
             String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
             if (lastNameError != null) {
                 System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);
@@ -198,6 +200,7 @@ public class ManagerMenuController extends BaseMenuController
 
         System.out.print("First name [letters only, max 50 chars]: ");
         String firstName = scanner.nextLine();
+        firstName = validator.formatName(firstName);
         String firstNameError = validator.getNameErrorMessage(firstName, "First name");
         if (firstNameError != null) {
             System.out.println(ConsoleColor.MAGENTA + firstNameError + ConsoleColor.RESET);
@@ -212,6 +215,7 @@ public class ManagerMenuController extends BaseMenuController
 
         System.out.print("Last name [letters only, max 50 chars]: ");
         String lastName = scanner.nextLine();
+        lastName = validator.formatName(lastName);
         String lastNameError = validator.getNameErrorMessage(lastName, "Last name");
         if (lastNameError != null) {
             System.out.println(ConsoleColor.MAGENTA + lastNameError + ConsoleColor.RESET);
