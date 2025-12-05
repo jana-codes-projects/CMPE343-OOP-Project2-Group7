@@ -10,6 +10,7 @@ com/emirfurqan/menus/LoginMenu.class
 com/emirfurqan/dao/ContactDao.class
 com/emirfurqan/menus/TesterMenu.class
 com/emirfurqan/models/User.class
+com/emirfurqan/auth/LoginDetails.class
 com/emirfurqan/services/ContactService.class
 com/emirfurqan/models/Contact.class
 com/emirfurqan/services/StatisticalInfoService.class

@@ -10,6 +10,7 @@ import com.emirfurqan.controllers.SeniorDeveloperMenuController;
 import com.emirfurqan.controllers.ManagerMenuController;
 import com.emirfurqan.utils.ConsoleColor;
 import com.emirfurqan.utils.AsciiAnimations;
+import com.emirfurqan.auth.LoginDetails;
 
 import java.util.Scanner;
 
@@ -22,6 +23,12 @@ public class Application
 
     public static void main(String[] args) throws DatabaseException
     {
+        String username = args[0];
+        String password = args[1];
+
+        LoginDetails.username = username;
+        LoginDetails.password = password;
+
         new Application().startApp();
     }
 
