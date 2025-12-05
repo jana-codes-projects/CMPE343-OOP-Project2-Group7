@@ -1,5 +1,5 @@
-CREATE DATABASE Project2Database
-USE Project2Database
+CREATE DATABASE IF NOT EXISTS Project2Database;
+USE Project2Database;
 
 CREATE TABLE users (
 	user_id INT NOT NULL auto_increment,
