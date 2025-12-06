@@ -117,7 +117,16 @@ public class SeniorDeveloperMenuController extends BaseMenuController
     private void searchContactsSingle() throws DatabaseException
     {
         System.out.print("Enter field to search by (first_name, last_name, phone_primary): ");
-        String field = scanner.nextLine();
+        String field;
+        while (true) {
+            field = scanner.nextLine();
+            if (field.equals("first_name") || field.equals("last_name") || field.equals("phone_primary")) {
+                break;
+            }
+            else{
+                System.out.print(ConsoleColor.MAGENTA + "Invalid field. Please enter first_name, last_name, or phone_primary: " + ConsoleColor.RESET);
+            }
+        }
         System.out.print("Enter value to search for: ");
         String value = scanner.nextLine();
 
@@ -141,11 +150,23 @@ public class SeniorDeveloperMenuController extends BaseMenuController
     private void searchContactsMultiple() throws DatabaseException
     {
         Map<String, String> fields = new HashMap<>();
-
+        String field;
         System.out.println("Enter field/value pairs for search (leave field empty to finish).");
         while (true) {
             System.out.print("Field name (e.g. first_name, birth_date, email): ");
-            String field = scanner.nextLine();
+            while (true) {
+                field = scanner.nextLine();
+                if (field.isBlank() ||
+                        field.equals("first_name") ||
+                        field.equals("last_name") ||
+                        field.equals("nickname") ||
+                        field.equals("email") ||
+                        field.equals("birth_date")) {
+                    break;
+                } else {
+                    System.out.print(ConsoleColor.MAGENTA + "Invalid field. Please enter first_name, last_name, nickname, email, or birth_date: " + ConsoleColor.RESET);
+                }
+            }
             if (field == null || field.isBlank()) {
                 break;
             }
