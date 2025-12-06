@@ -19,8 +19,7 @@ import java.util.Scanner;
  * Seniors can perform all junior operations and are additionally allowed
  * to add new contacts and delete existing contacts.
  */
-public class SeniorDeveloperMenuController extends BaseMenuController
-{
+public class SeniorDeveloperMenuController extends BaseMenuController {
     private final ContactService contactService = new ContactService();
     private final InputValidator validator = new InputValidator();
 
@@ -30,14 +29,12 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      * @param user    the authenticated senior developer
      * @param scanner shared scanner for console input
      */
-    public SeniorDeveloperMenuController(User user, Scanner scanner)
-    {
+    public SeniorDeveloperMenuController(User user, Scanner scanner) {
         super(user, scanner);
     }
 
     @Override
-    public void displayMenu()
-    {
+    public void displayMenu() {
         System.out.println(ConsoleColor.BRIGHT_CYAN + "===== SENIOR DEVELOPER MENU - " +
                 currentUser.getFirstName() + " " + currentUser.getLastName() +
                 " =====" + ConsoleColor.RESET);
@@ -67,7 +64,8 @@ public class SeniorDeveloperMenuController extends BaseMenuController
             case 8 -> addContact();
             case 9 -> deleteContact();
             case 10 -> undo();
-            default -> System.out.println(ConsoleColor.MAGENTA + "Unknown option. Please try again." + ConsoleColor.RESET);
+            default ->
+                System.out.println(ConsoleColor.MAGENTA + "Unknown option. Please try again." + ConsoleColor.RESET);
         }
     }
 
@@ -84,8 +82,27 @@ public class SeniorDeveloperMenuController extends BaseMenuController
         }
 
         System.out.println(ConsoleColor.BRIGHT_BLUE + "All contacts:" + ConsoleColor.RESET);
+        // Header
+        System.out.printf("%-4s %-12s %-10s %-12s %-10s %-20s %-20s %-30s %-15s %-11s %-11s %-11s%n",
+                "ID", "First Name", "Middle", "Last Name", "Nickname", "Phone 1", "Phone 2", "Email", "LinkedIn",
+                "Birth", "Created", "Updated");
+        System.out.println(
+                "----------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
         for (Contact c : contacts) {
-            System.out.println(c);
+            System.out.printf("%-4d %-12s %-10s %-12s %-10s %-20s %-20s %-30s %-15s %-11s %-11s %-11s%n",
+                    c.getContactId(),
+                    truncate(c.getFirstName(), 12),
+                    truncate(c.getMiddleName(), 10),
+                    truncate(c.getLastName(), 12),
+                    truncate(c.getNickname(), 10),
+                    truncate(c.getPhonePrimary(), 20),
+                    truncate(c.getPhoneSecondary(), 20),
+                    truncate(c.getEmail(), 30),
+                    truncate(c.getLinkedinUrl(), 15),
+                    c.getBirthDate() != null ? c.getBirthDate().toString() : "",
+                    c.getCreatedAt() != null ? c.getCreatedAt().toLocalDate().toString() : "",
+                    c.getUpdatedAt() != null ? c.getUpdatedAt().toLocalDate().toString() : "");
         }
     }
 
@@ -94,8 +111,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if search fails
      */
-    private void searchContactsSingle() throws DatabaseException
-    {
+    private void searchContactsSingle() throws DatabaseException {
         System.out.print("Enter field to search by (first_name, last_name, phone_primary): ");
         String field = scanner.nextLine();
         System.out.print("Enter value to search for: ");
@@ -118,8 +134,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if search fails
      */
-    private void searchContactsMultiple() throws DatabaseException
-    {
+    private void searchContactsMultiple() throws DatabaseException {
         Map<String, String> fields = new HashMap<>();
 
         System.out.println("Enter field/value pairs for search (leave field empty to finish).");
@@ -156,8 +171,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if loading contacts fails
      */
-    private void sortContacts() throws DatabaseException
-    {
+    private void sortContacts() throws DatabaseException {
         System.out.print("Enter field to sort by (first_name, last_name, nickname, email, birth_date): ");
         String field = scanner.nextLine();
         System.out.print("Sort ascending? (y/n): ");
@@ -184,8 +198,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if updating fails
      */
-    private void updateContact() throws DatabaseException
-    {
+    private void updateContact() throws DatabaseException {
         System.out.print("Enter contact ID to update: ");
         String idInput = scanner.nextLine();
         int contactId;
@@ -198,7 +211,8 @@ public class SeniorDeveloperMenuController extends BaseMenuController
 
         List<Contact> matches = contactService.searchSingleField("contact_id", String.valueOf(contactId));
         if (matches.isEmpty()) {
-            System.out.println(ConsoleColor.BRIGHT_YELLOW + "No contact found with ID " + contactId + "." + ConsoleColor.RESET);
+            System.out.println(
+                    ConsoleColor.BRIGHT_YELLOW + "No contact found with ID " + contactId + "." + ConsoleColor.RESET);
             return;
         }
 
@@ -258,7 +272,8 @@ public class SeniorDeveloperMenuController extends BaseMenuController
             }
         }
 
-        System.out.print("Primary phone (" + contact.getPhonePrimary() + ") [e.g. +90XXXXXXXXXX, codes: +1,+7,+20,+44,+55,+81,+86,+90,+91,+234]: ");
+        System.out.print("Primary phone (" + contact.getPhonePrimary()
+                + ") [e.g. +90XXXXXXXXXX, codes: +1,+7,+20,+44,+55,+81,+86,+90,+91,+234]: ");
         String phonePrimary = scanner.nextLine();
         if (!phonePrimary.isBlank()) {
             if (!validator.isValidPhoneNumber(phonePrimary)) {
@@ -270,13 +285,15 @@ public class SeniorDeveloperMenuController extends BaseMenuController
             boolean usedByOther = existingByPrimary.stream()
                     .anyMatch(c -> c.getContactId() != contact.getContactId());
             if (usedByOther) {
-                System.out.println(ConsoleColor.MAGENTA + "Primary phone is already used by another contact." + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.MAGENTA + "Primary phone is already used by another contact."
+                        + ConsoleColor.RESET);
                 return;
             }
             contact.setPhonePrimary(phonePrimary);
         }
 
-        System.out.print("Email (" + contact.getEmail() + ") [domains: @gmail.com, @outlook.com, @hotmail.com, @yahoo.com, @protonmail.com]: ");
+        System.out.print("Email (" + contact.getEmail()
+                + ") [domains: @gmail.com, @outlook.com, @hotmail.com, @yahoo.com, @protonmail.com]: ");
         String email = scanner.nextLine();
         if (!email.isBlank()) {
             if (!validator.isValidEmail(email)) {
@@ -288,7 +305,8 @@ public class SeniorDeveloperMenuController extends BaseMenuController
             boolean usedByOtherEmail = existingByEmail.stream()
                     .anyMatch(c -> c.getContactId() != contact.getContactId());
             if (usedByOtherEmail) {
-                System.out.println(ConsoleColor.MAGENTA + "Email address is already used by another contact." + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.MAGENTA + "Email address is already used by another contact."
+                        + ConsoleColor.RESET);
                 return;
             }
             contact.setEmail(email);
@@ -304,8 +322,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if persisting the contact fails
      */
-    private void addContact() throws DatabaseException
-    {
+    private void addContact() throws DatabaseException {
         Contact contact = new Contact();
 
         // Names
@@ -418,19 +435,23 @@ public class SeniorDeveloperMenuController extends BaseMenuController
         // Uniqueness checks for phone and email
         List<Contact> existingByPrimary = contactService.searchSingleField("phone_primary", primaryPhone);
         if (!existingByPrimary.isEmpty()) {
-            System.out.println(ConsoleColor.MAGENTA + "Primary phone is already used by another contact." + ConsoleColor.RESET);
+            System.out.println(
+                    ConsoleColor.MAGENTA + "Primary phone is already used by another contact." + ConsoleColor.RESET);
             return;
         }
         if (contact.getPhoneSecondary() != null && !contact.getPhoneSecondary().isBlank()) {
-            List<Contact> existingBySecondary = contactService.searchSingleField("phone_secondary", contact.getPhoneSecondary());
+            List<Contact> existingBySecondary = contactService.searchSingleField("phone_secondary",
+                    contact.getPhoneSecondary());
             if (!existingBySecondary.isEmpty()) {
-                System.out.println(ConsoleColor.MAGENTA + "Secondary phone is already used by another contact." + ConsoleColor.RESET);
+                System.out.println(ConsoleColor.MAGENTA + "Secondary phone is already used by another contact."
+                        + ConsoleColor.RESET);
                 return;
             }
         }
         List<Contact> existingByEmail = contactService.searchSingleField("email", email);
         if (!existingByEmail.isEmpty()) {
-            System.out.println(ConsoleColor.MAGENTA + "Email address is already used by another contact." + ConsoleColor.RESET);
+            System.out.println(
+                    ConsoleColor.MAGENTA + "Email address is already used by another contact." + ConsoleColor.RESET);
             return;
         }
 
@@ -446,8 +467,7 @@ public class SeniorDeveloperMenuController extends BaseMenuController
      *
      * @throws DatabaseException if deletion fails
      */
-    private void deleteContact() throws DatabaseException
-    {
+    private void deleteContact() throws DatabaseException {
         System.out.print("Enter contact ID to delete: ");
         String idInput = scanner.nextLine();
         int contactId;
@@ -460,7 +480,8 @@ public class SeniorDeveloperMenuController extends BaseMenuController
 
         List<Contact> matches = contactService.searchSingleField("contact_id", String.valueOf(contactId));
         if (matches.isEmpty()) {
-            System.out.println(ConsoleColor.BRIGHT_YELLOW + "No contact found with ID " + contactId + "." + ConsoleColor.RESET);
+            System.out.println(
+                    ConsoleColor.BRIGHT_YELLOW + "No contact found with ID " + contactId + "." + ConsoleColor.RESET);
             return;
         }
 
@@ -469,5 +490,16 @@ public class SeniorDeveloperMenuController extends BaseMenuController
 
         contactService.deleteContact(contactId);
         System.out.println(ConsoleColor.BRIGHT_GREEN + "Contact deleted successfully." + ConsoleColor.RESET);
+    }
+
+    /**
+     * Helper to truncate strings that exceed a certain length.
+     */
+    private String truncate(String input, int maxLength) {
+        if (input == null)
+            return "";
+        if (input.length() <= maxLength)
+            return input;
+        return input.substring(0, maxLength - 3) + "...";
     }
 }
